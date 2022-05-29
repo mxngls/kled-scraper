@@ -16,9 +16,14 @@ For the example output see the ```dict``` directory. I obtained the necessary id
 
 ## Installation & Usage
 
-Given that Go is installed[^2] just clone the repository:
+Given that Go is installed just clone the repository:
 ```zsh
 git clone git@github.com:Mxngls/kled-server.git
+```
+
+Version:
+```zsh
+% go version go1.17.6 darwin/amd64
 ```
 
 Then run:
@@ -28,8 +33,4 @@ Then run:
 
 The result will be a JSON file that's roughly 70 MB.
 
-[^1]:It should be noted that it is questionable if that behavior is intentioned th`ugh. 
-
-[^2]:```zsh
-% go version go1.17.6 darwin/amd64
-```
+[^1]:It should be noted that it is questionable if that behavior is intentioned though. 
