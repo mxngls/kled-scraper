@@ -25,7 +25,7 @@ Given that Go is installed:
 
 Just clone the repository:
 ```zsh
-git clone git@github.com:Mxngls/kled-server.git
+% git clone git@github.com:Mxngls/kled-server.git
 ````
 
 Then run:
