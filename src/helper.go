@@ -30,18 +30,12 @@ func CheckAttributeVal(n *html.Node, key string, val string) bool {
 
 // Check for the existence of a given id
 func CheckId(n *html.Node, id string) bool {
-	if CheckAttributeVal(n, "id", id) {
-		return true
-	}
-	return false
+	return CheckAttributeVal(n, "id", id)
 }
 
 // Check for the existence of a given class
 func CheckClass(n *html.Node, class string) bool {
-	if CheckAttributeVal(n, "class", class) {
-		return true
-	}
-	return false
+	return CheckAttributeVal(n, "class", class)
 }
 
 // Get all contents of a given node
@@ -96,20 +90,20 @@ func MatchBetween(s string, open string, close string) string {
 	return ""
 }
 
-// Get rid of everything other than alphanumeric characters in
-// given string
-func cleanString(s []byte) string {
-	j := 0
-	for _, b := range s {
-		if ('a' <= b && b <= 'z') ||
-			('A' <= b && b <= 'Z') ||
-			('0' <= b && b <= '9') {
-			s[j] = b
-			j++
-		}
-	}
-	return string(s[:j])
-}
+// // Get rid of everything other than alphanumeric characters in
+// // given string
+// func cleanString(s []byte) string {
+// 	j := 0
+// 	for _, b := range s {
+// 		if ('a' <= b && b <= 'z') ||
+// 			('A' <= b && b <= 'Z') ||
+// 			('0' <= b && b <= '9') {
+// 			s[j] = b
+// 			j++
+// 		}
+// 	}
+// 	return string(s[:j])
+// }
 
 func cleanStringSpecial(s []byte) string {
 	j := 0
@@ -122,7 +116,7 @@ func cleanStringSpecial(s []byte) string {
 	return strings.TrimSpace(string(s[:j]))
 }
 
-// Get rid of redundant spaces in a given string
-func standardizeSpaces(s string) string {
-	return strings.Join(strings.Fields(s), "")
-}
+// // Get rid of redundant spaces in a given string
+// func standardizeSpaces(s string) string {
+// 	return strings.Join(strings.Fields(s), "")
+// }
