@@ -3,3 +3,6 @@
 
 # Ignore certificates
 *.cer
+
+# Ignore the full dictionary
+dict_FULL.json
