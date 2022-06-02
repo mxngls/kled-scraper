@@ -53,11 +53,9 @@ func main() {
 	// Initiate Channel
 	c := make(chan Result)
 
-	fmt.Printf("\rFetched and parsed 0 from %d entries; running...", len(idArr))
+	// f.WriteString("[")
 
-	f.WriteString("[")
-
-	firstLoop := true
+	currIndex := start
 
 	// Loop over all the ids and write them to file
 	for {
@@ -75,24 +73,26 @@ func main() {
 			time.Sleep(time.Millisecond * 30)
 			go getView(id, c, client)
 
-			fmt.Printf("\rFetched and parsed %d from %d entries; running...", i+1, len(idArr))
+			// fmt.Printf("\rFetched and parsed %d from %d entries; running...", i+1, len(idArr))
 		}
 
-		firstLoop = false
+		curr := Result{}
 
 		// Store the fetched and parsed response bodies to file
 		for i := start; i < end; i++ {
-			encoder.Encode(<-c)
+			curr = <-c
+			encoder.Encode(curr)
+			currIndex++
 
-			// Write comma separator if not the first.
-			if !firstLoop && i < len(idArr)-1 {
-				_, err := f.WriteString(",")
+			if i != end-1 {
+				_, err = f.WriteString(",")
 				if err != nil {
-					log.Fatal(err)
+					panic(err)
 				}
 			}
 
-			firstLoop = false
+			fmt.Printf("\rCurrent Write: %d (Id: %s) (of %d writes in total); running...", currIndex, curr.Id, len(idArr))
+
 		}
 
 		// Break out of the loop when the end point is equal to the number of word ids
@@ -102,7 +102,7 @@ func main() {
 
 			f.Close()
 
-			fmt.Printf("\rWrote %d from %d entries to file: 'dict_FULL.JSON'; finished", len(idArr), len(idArr))
+			fmt.Printf("\rWrote %d from %d entries to file: 'dict_FULL.JSON'; finished", currIndex, len(idArr))
 
 			break
 		}
