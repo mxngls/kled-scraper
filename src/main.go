@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"sort"
 	"time"
 )
 
@@ -21,6 +22,7 @@ func createEncoder(w io.Writer) (enocer *json.Encoder) {
 	return encoder
 }
 
+// Implement sorting interface
 type ByIndex []Result
 
 func main() {
@@ -45,18 +47,19 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// f.WriteString("[")
+
 	// Create a custom JSON encoder
 	encoder := createEncoder(f)
 
 	// Set the number of goroutines that should be run
-	start := 0
+	start := 5000
 	end := start + 100
 
 	// Initiate Channel
 	c := make(chan Result)
 
-	// f.WriteString("[")
-
+	// Store current index
 	currIndex := start
 
 	// Loop over all the ids and write them to file
@@ -73,9 +76,7 @@ func main() {
 		for i := start; i < end; i++ {
 			id := string(idArr[i])
 			time.Sleep(time.Millisecond * 30)
-			go getView(id, c, client)
-
-			// fmt.Printf("\rFetched and parsed %d from %d entries; running...", i+1, len(idArr))
+			go getView(i, id, c, client)
 		}
 
 		arr := &[]Result{}
@@ -86,19 +87,27 @@ func main() {
 			currIndex++
 		}
 
-		encoder.Encode(*arr)
-		encoder.Encode(",")
+		sort.SliceStable(*arr, func(i int, j int) bool {
+			return (*arr)[i].Alpha < (*arr)[j].Alpha
+		})
+
+		for i := 0; i < len(*arr); i++ {
+			encoder.Encode((*arr)[i])
+			if (*arr)[i].Alpha != len(idArr)-1 {
+				f.WriteString(",")
+			}
+		}
 
 		fmt.Printf("\rCurrent Write: %d (Id: %d) (of %d writes in total); running...", currIndex, (*arr)[len(*arr)-1].Id, len(idArr))
 
 		// Break out of the loop when the end point is equal to the number of word ids
-		if end == 200 {
+		if end == len(idArr) {
 
 			f.WriteString("]")
 
 			f.Close()
 
-			fmt.Printf("\rWrote %d from %d entries to file: 'dict_FULL.JSON'; finished", currIndex, len(idArr))
+			fmt.Printf("Wrote %d from %d entries to file: 'dict_FULL.JSON'; finished", currIndex, len(idArr))
 
 			break
 		}
