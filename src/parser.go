@@ -10,8 +10,9 @@ import (
 	"golang.org/x/net/html"
 )
 
-func ParseView(result_html io.Reader, id string, l string) (res Result, err error) {
+func ParseView(result_html io.Reader, index int, id string, l string) (res Result, err error) {
 	var r Result
+	r.Alpha = index
 	r.Id, _ = strconv.Atoi(id)
 	doc, err := html.Parse(result_html)
 	dfsv(doc, &r, l)
