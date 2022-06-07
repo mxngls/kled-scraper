@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func getView(id string, channel chan Result, client *http.Client) (err error) {
+func getView(index int, id string, channel chan Result, client *http.Client) (err error) {
 
 	resp := requestView(id, "eng", "6", client)
 
@@ -23,6 +23,8 @@ func getView(id string, channel chan Result, client *http.Client) (err error) {
 	if err != nil {
 		panic(err)
 	}
+
+	data.Alpha = index
 
 	channel <- data
 

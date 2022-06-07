@@ -12,7 +12,7 @@ import (
 
 func ParseView(result_html io.Reader, id string, l string) (res Result, err error) {
 	var r Result
-	r.Id = id
+	r.Id, _ = strconv.Atoi(id)
 	doc, err := html.Parse(result_html)
 	dfsv(doc, &r, l)
 	return r, err
@@ -76,7 +76,7 @@ func dfsv(n *html.Node, in *Result, l string) *html.Node {
 				re := regexp.MustCompile("[0-9]+")
 				id := c.Attr[1].Val
 				id = re.FindAllString(id, -1)[0]
-				in.InflectionLinks[ind].Id = id
+				in.InflectionLinks[ind].Id, _ = strconv.Atoi(id)
 				in.InflectionLinks[ind].Hangul = GetTextSingle(c) + "<sup>" + GetTextSingle(c.NextSibling) + "</sup>"
 				ind++
 			}

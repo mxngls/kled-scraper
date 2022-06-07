@@ -3,17 +3,14 @@ package main
 import (
 	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"golang.org/x/net/html"
 )
 
 func getRef(c *html.Node, in *Result, l string) {
-	var ref struct {
-		Type  string
-		Value string
-		Id    string
-	}
+	var ref ref
 	r := len(in.Senses[len(in.Senses)-1].Reference) - 1
 	if c.Data == "dl" {
 		in.Senses[len(in.Senses)-1].Reference = append(in.Senses[len(in.Senses)-1].Reference, ref)
@@ -25,7 +22,7 @@ func getRef(c *html.Node, in *Result, l string) {
 		re := regexp.MustCompile("[0-9]+")
 		id := c.Attr[0].Val
 		id = re.FindAllString(id, -1)[0]
-		in.Senses[len(in.Senses)-1].Reference[r].Id = id
+		in.Senses[len(in.Senses)-1].Reference[r].Id, _ = strconv.Atoi(id)
 		in.Senses[len(in.Senses)-1].Reference[r].Value = GetContent(c.Parent, "sup")
 
 	} else if c.Data == "dd" && c.FirstChild.Type == html.TextNode {
