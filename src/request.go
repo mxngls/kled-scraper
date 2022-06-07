@@ -14,15 +14,9 @@ func requestView(id string, lang string, langCode string, client *http.Client) (
 		langCode,
 	)
 
-	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		panic(err)
-	}
+	req, _ := http.NewRequest(http.MethodGet, url, nil)
 
 	resp, err = client.Do(req)
-	if err != nil {
-		panic(err)
-	}
 
-	return resp
+	return resp, err
 }
