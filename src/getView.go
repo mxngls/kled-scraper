@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"net/http"
 )
@@ -10,8 +9,7 @@ import (
 func recRequestView(id string, lang string, langCode string, client *http.Client) (resp *http.Response) {
 	resp, err := requestView(id, lang, langCode, client)
 	if err != nil {
-		fmt.Println("Error")
-		// resp = recRequestView(id, lang, langCode, client)
+		resp = recRequestView(id, lang, langCode, client)
 	}
 	return resp
 }
