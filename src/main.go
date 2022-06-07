@@ -21,6 +21,8 @@ func createEncoder(w io.Writer) (enocer *json.Encoder) {
 	return encoder
 }
 
+type ByIndex []Result
+
 func main() {
 
 	// Initiate the http client
@@ -76,27 +78,21 @@ func main() {
 			// fmt.Printf("\rFetched and parsed %d from %d entries; running...", i+1, len(idArr))
 		}
 
-		curr := Result{}
+		arr := &[]Result{}
 
 		// Store the fetched and parsed response bodies to file
 		for i := start; i < end; i++ {
-			curr = <-c
-			encoder.Encode(curr)
+			*arr = append(*arr, <-c)
 			currIndex++
-
-			if i != end-1 {
-				_, err = f.WriteString(",")
-				if err != nil {
-					panic(err)
-				}
-			}
-
-			fmt.Printf("\rCurrent Write: %d (Id: %s) (of %d writes in total); running...", currIndex, curr.Id, len(idArr))
-
 		}
 
+		encoder.Encode(*arr)
+		encoder.Encode(",")
+
+		fmt.Printf("\rCurrent Write: %d (Id: %d) (of %d writes in total); running...", currIndex, (*arr)[len(*arr)-1].Id, len(idArr))
+
 		// Break out of the loop when the end point is equal to the number of word ids
-		if end == len(idArr) {
+		if end == 200 {
 
 			f.WriteString("]")
 

@@ -1,7 +1,9 @@
 package main
 
 type Result struct {
-	Id              string
+	Alpha           int
+	Frequency       int
+	Id              int
 	Hangul          string
 	HomonymNumber   int
 	Hanja           string
@@ -20,15 +22,17 @@ type sense struct {
 	Definition   string
 	KrDefinition string
 	Examples     []string
-	Reference    []struct {
-		Type  string
-		Value string
-		Id    string
-	}
+	Reference    []ref
+}
+
+type ref struct {
+	Type  string
+	Value string
+	Id    int
 }
 
 type inflectionLink struct {
-	Id     string
+	Id     int
 	Hangul string
 }
 
