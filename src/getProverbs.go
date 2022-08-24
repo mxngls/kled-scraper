@@ -17,6 +17,8 @@ func getProverbs(n *html.Node, p []proverb, l string) {
 				break
 			}
 		}
+	} else if p[len(p)-1].Type == "" && CheckClass(n, "manyLang6") {
+		p[len(p)-1].Type = GetTextAll(n)
 
 	} else if CheckClass(n, "explain_list") {
 		p[len(p)-1].Senses = append(p[len(p)-1].Senses, InitSense())
