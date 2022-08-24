@@ -11,8 +11,21 @@ import (
 
 func getRefs(c *html.Node, r []ref, l string) {
 
-	if CheckClass(c, fmt.Sprintf("manyLang%s", l)) && c.Data == "span" {
-		r[len(r)-1].Type = strings.TrimSpace(c.FirstChild.Data)
+	if c.Data == "dl" || CheckClass(c, "star_wrap mt0") {
+		s.Reference = append(s.Reference, InitRef())
+
+	} else if c.Data == "p" {
+		for n := c.FirstChild; n != nil; n = n.NextSibling {
+			if n.Type == html.TextNode {
+				s.Reference[len(s.Reference)-1].Value = strings.TrimSpace(n.Data)
+			}
+		}
+
+	} else if CheckClass(c, "manyLang6 mr5") {
+		s.Reference[len(s.Reference)-1].Type = strings.TrimSpace(GetTextAll(c))
+
+	} else if CheckClass(c, fmt.Sprintf("manyLang%s", l)) && c.Data == "span" {
+		s.Reference[len(s.Reference)-1].Type = strings.TrimSpace(c.FirstChild.Data)
 
 	} else if c.Data == "a" && CheckClass(c, "undL") {
 		re := regexp.MustCompile("[0-9]+")
