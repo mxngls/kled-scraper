@@ -7,7 +7,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func getSenses(n *html.Node, s []sense, l string) {
+func getSenses(n *html.Node, s []sense, l string) (o *html.Node) {
 
 	if CheckClass(n, fmt.Sprintf("multiTrans manyLang%s mb10 printArea", l)) ||
 		CheckClass(n, fmt.Sprintf("subMultiTrans manyLang%s mb10 printArea", l)) {
@@ -44,7 +44,6 @@ func getSenses(n *html.Node, s []sense, l string) {
 		for e := n.FirstChild; e != nil; e = e.NextSibling {
 			if e.Type == html.CommentNode || e.Data == "script" || len(strings.TrimSpace(e.Data)) == 0 {
 				continue
-
 			} else {
 				var ex = example{}
 				if e.Data == "li" {
@@ -53,7 +52,7 @@ func getSenses(n *html.Node, s []sense, l string) {
 					s[len(s)-1].Examples[len(s[len(s)-1].Examples)-1].Value = v
 					s[len(s)-1].Examples[len(s[len(s)-1].Examples)-1].Type = GetTextAll(e)
 				} else if e.Parent.Data != "ul" {
-					break
+					return n
 				}
 			}
 		}
@@ -71,4 +70,5 @@ func getSenses(n *html.Node, s []sense, l string) {
 			getSenses(a, s, l)
 		}
 	}
+	return n
 }
