@@ -4,5 +4,5 @@
 # Ignore certificates
 *.cer
 
-# Ignore the full dictionary
-dict_FULL.json
+# Ignore full dictionary files
+dict_FULL*
