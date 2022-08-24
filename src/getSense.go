@@ -60,8 +60,7 @@ func getSenses(n *html.Node, s []sense, l string) {
 
 	} else if CheckClass(n, "heading_wrap printArea") ||
 		CheckClass(n, "heading_wrap dotted printArea") {
-		s[len(s)-1].Reference = append(s[len(s)-1].Reference, ref{})
-		getRefs(n, s[len(s)-1].Reference, l)
+		getRefs(n, &s[len(s)-1], l)
 	}
 
 	for a := n.FirstChild; a != nil; a = a.NextSibling {

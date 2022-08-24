@@ -9,7 +9,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func getRefs(c *html.Node, r []ref, l string) {
+func getRefs(c *html.Node, s *sense, l string) {
 
 	if c.Data == "dl" || CheckClass(c, "star_wrap mt0") {
 		s.Reference = append(s.Reference, InitRef())
@@ -31,15 +31,15 @@ func getRefs(c *html.Node, r []ref, l string) {
 		re := regexp.MustCompile("[0-9]+")
 		id := c.Attr[0].Val
 		id = re.FindAllString(id, -1)[0]
-		r[len(r)-1].Id, _ = strconv.Atoi(id)
-		r[len(r)-1].Value = GetContent(c.Parent, "sup")
+		s.Reference[len(s.Reference)-1].Id, _ = strconv.Atoi(id)
+		s.Reference[len(s.Reference)-1].Value = GetContent(c.Parent, "sup")
 
 	} else if c.Data == "dd" {
 		for a := c.FirstChild; a != nil; a = a.NextSibling {
 			if a.Type == html.CommentNode || a.Data == "script" || len(strings.TrimSpace(a.Data)) == 0 {
 				continue
 			} else {
-				r[len(r)-1].Value = strings.TrimSpace(c.FirstChild.Data)
+				s.Reference[len(s.Reference)-1].Value = strings.TrimSpace(c.FirstChild.Data)
 				break
 			}
 		}
@@ -53,7 +53,7 @@ func getRefs(c *html.Node, r []ref, l string) {
 		if e.Type == html.CommentNode || e.Data == "script" {
 			continue
 		} else {
-			getRefs(e, r, l)
+			getRefs(e, s, l)
 		}
 	}
 }
