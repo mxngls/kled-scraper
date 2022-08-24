@@ -83,9 +83,9 @@ func dfsv(n *html.Node, in *Result, l string) *html.Node {
 			}
 		}
 
-	} else if CheckClass(n, "detail_list") {
+	} else if CheckClass(n, "explain_list") && !CheckClass(n.Parent, "explain_list_wrap") {
 		in.Senses = append(in.Senses, InitSense())
-		getSenses(n, in.Senses, l)
+		n = getSenses(n, in.Senses, l)
 
 	} else if CheckClass(n, "idiom_adage") {
 		in.Proverbs = append(in.Proverbs, InitProverb())
