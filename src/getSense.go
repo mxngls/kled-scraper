@@ -16,7 +16,23 @@ func getSenses(n *html.Node, s []sense, l string) {
 	} else if CheckClass(n, "senseDef ml20 printArea") ||
 		CheckClass(n, "subSenseDef ml20 printArea") {
 		// Get the korean definition
-		s[len(s)-1].KrDefinition = GetTextSingle(n.LastChild)
+		kr := ""
+		for k := n.FirstChild; k != nil; k = k.NextSibling {
+			if k.Type == html.CommentNode || k.Data == "script" || len(strings.TrimSpace(k.Data)) == 0 {
+				continue
+
+			} else if !CheckClass(k, "senseDefNo") {
+				kr += strings.TrimSpace(GetTextAll(k))
+
+			} else if k.Data == "a" {
+				kr += strings.TrimSpace(GetTextAll(k))
+
+			} else if CheckClass(k, fmt.Sprintf("multiSenseDef manyLang%s ml20 printArea", l)) ||
+				CheckClass(k, fmt.Sprintf("subMultiSenseDef manyLang%s ml20 printArea", l)) {
+				break
+			}
+		}
+		s[len(s)-1].KrDefinition = kr
 
 	} else if CheckClass(n, fmt.Sprintf("multiSenseDef manyLang%s ml20 printArea", l)) ||
 		CheckClass(n, fmt.Sprintf("subMultiSenseDef manyLang%s ml20 printArea", l)) {
