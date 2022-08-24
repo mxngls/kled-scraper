@@ -28,6 +28,7 @@ type sense struct {
 
 type proverb struct {
 	Hangul string
+	Type   string
 	Senses []sense
 }
 
