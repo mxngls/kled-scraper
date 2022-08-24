@@ -12,11 +12,9 @@ func getProverbs(n *html.Node, p []proverb, l string) {
 		for a := n.FirstChild; a != nil; a = a.NextSibling {
 			if a.Type == html.CommentNode || a.Data == "script" || len(strings.TrimSpace(a.Data)) == 0 {
 				continue
-			} else {
-				if a.Data == "dd" {
-					p[len(p)-1].Hangul = GetTextAll(a)
-					break
-				}
+			} else if a.Data == "dd" {
+				p[len(p)-1].Hangul = GetTextAll(a)
+				break
 			}
 		}
 
