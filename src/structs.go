@@ -33,8 +33,8 @@ type proverb struct {
 }
 
 type example struct {
-	Type  string
-	Value string
+	Plain string
+	Html  string
 }
 
 type ref struct {

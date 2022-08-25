@@ -49,8 +49,8 @@ func getSenses(n *html.Node, s []sense, l string) (o *html.Node) {
 				if e.Data == "li" {
 					s[len(s)-1].Examples = append(s[len(s)-1].Examples, ex)
 					v := GetContent(e, "b")
-					s[len(s)-1].Examples[len(s[len(s)-1].Examples)-1].Value = v
-					s[len(s)-1].Examples[len(s[len(s)-1].Examples)-1].Type = GetTextAll(e)
+					s[len(s)-1].Examples[len(s[len(s)-1].Examples)-1].Html = v
+					s[len(s)-1].Examples[len(s[len(s)-1].Examples)-1].Plain = GetTextAll(e)
 				} else if e.Parent.Data != "ul" {
 					return n
 				}
