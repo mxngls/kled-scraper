@@ -8,8 +8,6 @@ I found two particular problems with their API that bothered me a lot though:
 1. For some reason the requested multimedia part (videos, pronounciation files etc.) is not delivered.
 2. The searched keyword is not highlighted in any way in the example sentences.[^1]
 
-For one of my other [projects](https://github.com/Mxngls/kled-server) I wrote an API endpoint that fetches and parses the html for a given word. For future use I thought it might be greate to just scrape the whole (english-korean) dictionary. 
-
 ## Description
 
 The given script does exactly that. As the dictionary itself is licensed under the Creative Common License there are no copyright issues to worry about at all.
