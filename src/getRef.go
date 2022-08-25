@@ -16,8 +16,8 @@ func getRefs(c *html.Node, s *sense, l string) {
 
 	} else if c.Data == "p" {
 		for n := c.FirstChild; n != nil; n = n.NextSibling {
-			if n.Type == html.TextNode {
-				s.Reference[len(s.Reference)-1].Value = strings.TrimSpace(n.Data)
+			if n.Type == html.TextNode && strings.TrimSpace(n.Data) != "" {
+				s.Reference[len(s.Reference)-1].Value = append(s.Reference[len(s.Reference)-1].Value, strings.TrimSpace(n.Data))
 			}
 		}
 
@@ -31,15 +31,16 @@ func getRefs(c *html.Node, s *sense, l string) {
 		re := regexp.MustCompile("[0-9]+")
 		id := c.Attr[0].Val
 		id = re.FindAllString(id, -1)[0]
-		s.Reference[len(s.Reference)-1].Id, _ = strconv.Atoi(id)
-		s.Reference[len(s.Reference)-1].Value = GetContent(c.Parent, "sup")
+		toInt, _ := strconv.Atoi(id)
+		s.Reference[len(s.Reference)-1].Id = append(s.Reference[len(s.Reference)-1].Id, toInt)
+		s.Reference[len(s.Reference)-1].Value = append(s.Reference[len(s.Reference)-1].Value, GetContent(c.Parent, "sup"))
 
 	} else if c.Data == "dd" {
 		for a := c.FirstChild; a != nil; a = a.NextSibling {
-			if a.Type == html.CommentNode || a.Data == "script" || len(strings.TrimSpace(a.Data)) == 0 {
+			if a.Type == html.CommentNode || a.Data == "script" || strings.TrimSpace(a.Data) == "" || a.Data == ", " {
 				continue
 			} else {
-				s.Reference[len(s.Reference)-1].Value = strings.TrimSpace(c.FirstChild.Data)
+				s.Reference[len(s.Reference)-1].Value = append(s.Reference[len(s.Reference)-1].Value, strings.TrimSpace(c.FirstChild.Data))
 				break
 			}
 		}

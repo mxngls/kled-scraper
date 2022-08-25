@@ -39,8 +39,8 @@ type example struct {
 
 type ref struct {
 	Type  string
-	Value string
-	Id    int
+	Value []string
+	Id    []int
 }
 
 type inflectionLink struct {
